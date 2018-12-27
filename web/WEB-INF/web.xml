@@ -20,13 +20,14 @@
 
     <filter-mapping>
         <filter-name>LogFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/HelloWorld</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
         <filter-name>AuthenFilter</filter-name>
         <url-pattern>/HelloWorld</url-pattern>
     </filter-mapping>
+
     <servlet>
         <servlet-name>HelloWorld</servlet-name>
         <servlet-class>HelloWorld</servlet-class>
@@ -42,4 +43,30 @@
         <!--<servlet-name>HelloForm</servlet-name>-->
         <!--<url-pattern>/HelloForm</url-pattern>-->
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ErrorHandler</servlet-name>
+        <servlet-class>ErrorHandler</servlet-class>
+    </servlet>
+    <!-- servlet mappings -->
+    <servlet-mapping>
+        <servlet-name>ErrorHandler</servlet-name>
+        <url-pattern>/ErrorHandler</url-pattern>
+    </servlet-mapping>
+
+    <!-- error-code 相关的错误页面 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/ErrorHandler</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/ErrorHandler</location>
+    </error-page>
+
+    <!--session超时设置-->
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+
 </web-app>

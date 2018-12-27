@@ -7,11 +7,13 @@
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -32,6 +34,18 @@ public class HelloForm extends HttpServlet {
     //重载处理表单
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //为名字和姓氏创建Cookie
+        Cookie nameCookie = new Cookie("name", URLEncoder.encode(req.getParameter("name"), "UTF-8"));
+        Cookie urlCookie = new Cookie("url", URLEncoder.encode(req.getParameter("url")));
+
+        // 为两个 Cookie 设置过期日期为 24 小时后
+        nameCookie.setMaxAge(60 * 60 * 24);
+        urlCookie.setMaxAge(60 * 60 * 24);
+
+        // 在响应头中添加两个 Cookie
+        resp.addCookie(nameCookie);
+        resp.addCookie(urlCookie);
+
         //这里不改解析中文会乱码
         resp.setContentType("text/html");
         //请求解决乱码
@@ -56,7 +70,7 @@ public class HelloForm extends HttpServlet {
                 "<h1 align=\"center\">" + title + "</h1>\n" +
                 "<ul>\n" +
                 "  <li><b>站点名</b>："
-                + name + "\n" +
+                + req.getParameter("name") + "\n" +
                 "  <li><b>网址</b>："
                 + req.getParameter("url") + "\n" +
                 "</ul>\n" +
